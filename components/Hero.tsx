@@ -276,12 +276,12 @@ export function Hero({
         transition={{ duration: 0.7, ease: "easeOut" }}
       >
         <motion.h1
-          className="mt-8 text-5xl font-semibold tracking-tight text-foreground sm:text-6xl lg:text-8xl"
+          className="mt-8 text-3xl font-semibold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl"
           initial={{ opacity: 0, y: 22 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.65, delay: 0.15 }}
         >
-          <span className="block text-sm font-medium uppercase tracking-[0.45em] text-muted">
+          <span className="block text-xs sm:text-sm font-medium uppercase tracking-[0.4em] sm:tracking-[0.45em] text-muted">
             Welcome, I am
           </span>
           <span className="mt-4 inline-flex min-h-[1.1em] items-baseline justify-center">
@@ -294,7 +294,7 @@ export function Hero({
         </motion.h1>
 
         <motion.p
-          className="mt-6 text-xl font-medium text-foreground/90 sm:text-2xl"
+          className="mt-6 text-lg sm:text-xl md:text-2xl font-medium text-foreground/90"
           initial={{ opacity: 0, y: 18 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.22 }}

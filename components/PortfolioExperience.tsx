@@ -4,6 +4,7 @@ import { type FormEvent, useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import Lenis from "lenis";
+// import emailjs from "@emailjs/browser";
 import {
   ArrowRight,
   BookOpen,
@@ -30,6 +31,16 @@ import {
 
 import { Hero } from "./Hero";
 import { Navbar } from "./Navbar";
+
+// EmailJS type declaration
+declare global {
+  interface Window {
+    emailjs?: {
+      send: (serviceID: string, templateID: string, templateParams: Record<string, string>, publicKey: string) => Promise<{ status: number; text: string }>;
+      init: (publicKey: string) => void;
+    };
+  }
+}
 
 type Stage = "landing" | "transition" | "main";
 
@@ -463,20 +474,94 @@ export function PortfolioExperience() {
     target?.scrollIntoView({ behavior: "smooth", block: "center" });
   };
 
-  const handleContactSubmit = (event: FormEvent<HTMLFormElement>) => {
+  const [contactStatus, setContactStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [contactError, setContactError] = useState<string>("");
+
+  // Helper to load EmailJS SDK from CDN
+  const loadEmailJS = (): Promise<NonNullable<typeof window.emailjs>> => {
+    return new Promise((resolve, reject) => {
+      if (typeof window === "undefined") {
+        reject(new Error("Window not available"));
+        return;
+      }
+      
+      if (window.emailjs) {
+        resolve(window.emailjs);
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = "https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js";
+      script.async = true;
+      script.onload = () => {
+        if (window.emailjs) {
+          resolve(window.emailjs);
+        } else {
+          reject(new Error("EmailJS failed to load"));
+        }
+      };
+      script.onerror = () => reject(new Error("Failed to load EmailJS"));
+      document.head.appendChild(script);
+    });
+  };
+
+  const handleContactSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setContactStatus("loading");
+    setContactError("");
 
     const formData = new FormData(event.currentTarget);
-    const name = String(formData.get("name") ?? "");
-    const email = String(formData.get("email") ?? "");
-    const message = String(formData.get("message") ?? "");
+    const name = String(formData.get("name") ?? "").trim();
+    const email = String(formData.get("email") ?? "").trim();
+    const message = String(formData.get("message") ?? "").trim();
 
-    const subject = encodeURIComponent(`Portfolio inquiry from ${name || "a visitor"}`);
-    const body = encodeURIComponent(
-      `Name: ${name}\nEmail: ${email}\n\n${message || "Write your message here."}`,
-    );
+    // Validate
+    if (!name || !email || !message) {
+      setContactStatus("error");
+      setContactError("Please fill in all fields.");
+      return;
+    }
 
-    window.location.href = `mailto:hello@example.com?subject=${subject}&body=${body}`;
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setContactStatus("error");
+      setContactError("Please enter a valid email address.");
+      return;
+    }
+
+    // Store form reference before async operations
+    const form = event.currentTarget;
+
+    try {
+      // EmailJS configuration - using the provided service ID
+      // You'll need to set up a template in EmailJS dashboard
+      const serviceID = "service_vbj2e3b";
+      const templateID = "template_contact_form"; // You'll create this in EmailJS
+      const publicKey = "17_4cYrourxBvKEeh"; // Get this from EmailJS dashboard
+
+      const templateParams = {
+        user_name: name,
+        user_email: email,
+        message: message,
+      };
+
+      // Use EmailJS SDK via CDN
+      const emailjs = await loadEmailJS();
+      
+      const response = await emailjs.send(serviceID, templateID, templateParams, publicKey);
+      
+      if (response.status !== 200) {
+        throw new Error("Failed to send message");
+      }
+
+      setContactStatus("success");
+      // Reset form
+      form.reset();
+    } catch (error) {
+      setContactStatus("error");
+      setContactError(error instanceof Error ? error.message : "Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -555,7 +640,7 @@ export function PortfolioExperience() {
             activeSection=""
           />
 
-          <main className="relative mx-auto w-full max-w-6xl px-6 pb-24 pt-28 lg:px-8 lg:pt-32">
+          <main className="relative mx-auto w-full max-w-6xl px-4 pb-24 pt-20 sm:px-6 sm:pt-24 lg:px-8 lg:pt-32">
             {/* Global ambient background gradients */}
             <div className="pointer-events-none fixed inset-0 -z-50 overflow-hidden">
               {/* Top-left violet glow */}
@@ -579,7 +664,7 @@ export function PortfolioExperience() {
               style={{ y: floatFast }}
             />
 
-            <section id="about" className="scroll-mt-28">
+            <section id="about" className="scroll-mt-20 sm:scroll-mt-28">
               <motion.div
                 className="grid gap-8 overflow-hidden rounded-[2.5rem] border border-border bg-surface/70 p-6 shadow-2xl shadow-black/20 backdrop-blur-xl lg:grid-cols-[1.08fr_0.92fr] lg:p-8"
                 initial={{ opacity: 0, y: 28 }}
@@ -592,11 +677,11 @@ export function PortfolioExperience() {
                     About Me
                   </span>
 
-                  <h2 className="max-w-2xl text-4xl font-semibold tracking-tight text-foreground sm:text-5xl lg:text-[3.35rem] lg:leading-[1.02]">
+                  <h2 className="max-w-2xl text-3xl font-semibold tracking-tight text-foreground sm:text-4xl md:text-5xl lg:text-[3.35rem] lg:leading-[1.02]">
                     Hi! I&apos;m Benkhair Najir, a Computer Engineer and Web Developer
                   </h2>
 
-                  <p className="max-w-2xl text-base leading-8 text-muted sm:text-lg">
+                  <p className="max-w-2xl text-base leading-7 text-muted sm:text-lg sm:leading-8">
                     Computer Engineer passionate about robotics and building meaningful digital solutions. I focus on clean code and solving real world problems.
                     I enjoy turning ideas into practical systems that are both efficient and impactful.
                   </p>
@@ -612,13 +697,14 @@ export function PortfolioExperience() {
                   >
                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(89,132,255,0.28),transparent_60%)]" />
 
-                    <div className="relative aspect-[0.9] min-h-[380px] w-full overflow-hidden rounded-[2rem]">
+                    <div className="relative aspect-[0.85] sm:aspect-[0.9] w-full overflow-hidden rounded-[2rem] min-h-[280px] sm:min-h-[340px] md:min-h-[380px]">
                       <Image
                         src="/BENKHAIR%20NAJIR.jpg"
                         alt="BENKHAIR NAJIR"
                         fill
                         priority
                         className="object-cover object-top"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 400px"
                       />
                     </div>
                   </motion.div>
@@ -713,7 +799,7 @@ export function PortfolioExperience() {
               </motion.div>
             </section>
 
-            <section id="tech-stack" className="scroll-mt-28">
+            <section id="tech-stack" className="scroll-mt-20 sm:scroll-mt-28">
               <motion.div
                   className="mt-6 rounded-[2rem] border border-border bg-background/45 p-5 shadow-xl shadow-black/10 backdrop-blur-xl"
                   initial={{ opacity: 0, y: 18 }}
@@ -819,7 +905,7 @@ export function PortfolioExperience() {
               </motion.div>
             </section>
 
-            <section id="projects" className="scroll-mt-28 pt-20 lg:pt-24">
+            <section id="projects" className="scroll-mt-20 sm:scroll-mt-28 pt-16 sm:pt-20 lg:pt-24">
               {/* Background decorations */}
               <div className="absolute left-1/4 top-[2000px] h-96 w-96 rounded-full bg-violet-500/10 blur-[100px]" />
               <div className="absolute right-1/4 top-[2200px] h-96 w-96 rounded-full bg-cyan-500/10 blur-[100px]" />
@@ -840,15 +926,15 @@ export function PortfolioExperience() {
                     <Layers3 className="h-3.5 w-3.5 text-accent" />
                     Project Showcase
                   </motion.span>
-                  <h2 className="text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-foreground lg:text-5xl">
                     Featured Projects
                   </h2>
                 </div>
 
                 {/* 3D Carousel with Floating Animation */}
-                <div className="relative mt-12 h-[450px] sm:h-[520px]">
+                <div className="relative mt-8 sm:mt-12 h-[380px] sm:h-[450px] lg:h-[520px]">
                   {/* Ambient glow behind carousel */}
-                  <div className="absolute left-1/2 top-1/2 h-[300px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-violet-500/20 via-accent/20 to-cyan-500/20 blur-[80px]" />
+                  <div className="absolute left-1/2 top-1/2 h-[200px] w-[300px] sm:h-[250px] sm:w-[400px] lg:h-[300px] lg:w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-violet-500/20 via-accent/20 to-cyan-500/20 blur-[60px] sm:blur-[80px]" />
 
                   <div className="absolute inset-0 flex items-center justify-center">
                     {projects.map((project, index) => {
@@ -858,12 +944,12 @@ export function PortfolioExperience() {
                       const isCenter = offset === 0;
                       const isActive = isCenter;
 
-                      // Calculate position and rotation for 3D effect
-                      const translateX = offset * 320;
-                      const translateZ = isCenter ? 0 : -250 - absOffset * 80;
-                      const rotateY = offset * -20;
-                      const scale = isCenter ? 1 : 0.8 - absOffset * 0.08;
-                      const opacity = absOffset > 2 ? 0 : 1 - absOffset * 0.35;
+                      // Calculate position and rotation for 3D effect - responsive
+                      const translateX = offset * 220;
+                      const translateZ = isCenter ? 0 : -200 - absOffset * 60;
+                      const rotateY = offset * -15;
+                      const scale = isCenter ? 1 : 0.85 - absOffset * 0.08;
+                      const opacity = absOffset > 1 ? 0 : 1 - absOffset * 0.35;
                       const zIndex = 20 - absOffset;
 
                       // Floating animation offset based on index
@@ -874,7 +960,7 @@ export function PortfolioExperience() {
                           key={project.title}
                           type="button"
                           onClick={() => isActive ? setModalProject(project) : setCarouselIndex(index)}
-                          className="absolute w-[290px] cursor-pointer sm:w-[340px]"
+                          className="absolute w-[260px] sm:w-[290px] lg:w-[340px] cursor-pointer"
                           initial={false}
                           animate={{
                             x: translateX,
@@ -942,7 +1028,7 @@ export function PortfolioExperience() {
                             {/* Icon container with project color */}
                             <div className="flex flex-col items-center">
                               <motion.div
-                                className="flex h-20 w-20 items-center justify-center rounded-2xl transition-colors duration-300"
+                                className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-2xl transition-colors duration-300"
                                 style={{
                                   backgroundColor: isActive ? `${project.color}30` : `${project.color}15`,
                                   color: isActive ? project.color : `${project.color}99`,
@@ -950,10 +1036,10 @@ export function PortfolioExperience() {
                                 whileHover={isActive ? { rotate: [0, -10, 10, 0], scale: 1.1 } : {}}
                                 transition={{ duration: 0.5 }}
                               >
-                                <Icon className="h-10 w-10" />
+                                <Icon className="h-8 w-8 sm:h-10 sm:w-10" />
                               </motion.div>
 
-                              <div className="mt-6 text-center">
+                              <div className="mt-4 sm:mt-6 text-center">
                                 <span
                                   className="inline-block rounded-full px-3 py-1 text-[10px] font-semibold uppercase tracking-wider transition-colors duration-300"
                                   style={{
@@ -963,17 +1049,17 @@ export function PortfolioExperience() {
                                 >
                                   {project.category}
                                 </span>
-                                <h3 className="mt-3 text-lg font-semibold text-foreground sm:text-xl">
+                                <h3 className="mt-2 sm:mt-3 text-base sm:text-lg font-semibold text-foreground lg:text-xl">
                                   {project.title}
                                 </h3>
-                                <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted">
+                                <p className="mt-2 line-clamp-2 text-xs sm:text-sm leading-5 sm:leading-6 text-muted">
                                   {project.description}
                                 </p>
                               </div>
                             </div>
 
                             {/* Click indicator */}
-                            <div className="mt-6 flex items-center justify-center gap-2 text-xs text-muted">
+                            <div className="mt-4 sm:mt-6 flex items-center justify-center gap-2 text-xs text-muted">
                               {isActive ? (
                                 <>
                                   <span className="flex h-2 w-2 rounded-full bg-accent animate-pulse" />
@@ -994,7 +1080,7 @@ export function PortfolioExperience() {
                 </div>
 
                 {/* Navigation Controls */}
-                <div className="mt-8 flex flex-col items-center gap-6">
+                <div className="mt-6 sm:mt-8 flex flex-col items-center gap-4 sm:gap-6">
                   {/* Dots indicator with project colors */}
                   <div className="flex items-center gap-2">
                     {projects.map((project, index) => (
@@ -1066,7 +1152,7 @@ export function PortfolioExperience() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm"
+                      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 sm:p-4 backdrop-blur-sm"
                       onClick={() => setModalProject(null)}
                     >
                       <motion.div
@@ -1074,7 +1160,7 @@ export function PortfolioExperience() {
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
                         transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-                        className="relative w-full max-w-lg overflow-hidden rounded-[2rem] border bg-surface/95 p-6 shadow-2xl backdrop-blur-xl sm:p-8"
+                        className="relative w-full max-w-[95vw] sm:max-w-lg overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] border bg-surface/95 p-4 sm:p-6 lg:p-8 shadow-2xl backdrop-blur-xl max-h-[90vh] overflow-y-auto"
                         style={{
                           borderColor: `${modalProject.color}40`,
                           boxShadow: `0 25px 50px -12px ${modalProject.color}25`,
@@ -1099,7 +1185,7 @@ export function PortfolioExperience() {
                         {/* Content */}
                         <div className="flex flex-col items-center text-center">
                           <motion.div
-                            className="flex h-20 w-20 items-center justify-center rounded-2xl"
+                            className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-2xl"
                             style={{
                               backgroundColor: `${modalProject.color}25`,
                               color: modalProject.color,
@@ -1109,7 +1195,7 @@ export function PortfolioExperience() {
                           >
                             {(() => {
                               const Icon = modalProject.icon;
-                              return <Icon className="h-10 w-10" />;
+                              return <Icon className="h-8 w-8 sm:h-10 sm:w-10" />;
                             })()}
                           </motion.div>
 
@@ -1123,11 +1209,11 @@ export function PortfolioExperience() {
                             {modalProject.category}
                           </span>
 
-                          <h3 className="mt-3 text-2xl font-semibold text-foreground sm:text-3xl">
+                          <h3 className="mt-3 text-xl sm:text-2xl font-semibold text-foreground lg:text-3xl">
                             {modalProject.title}
                           </h3>
 
-                          <p className="mt-4 text-sm leading-7 text-muted">
+                          <p className="mt-3 sm:mt-4 text-sm leading-6 sm:leading-7 text-muted">
                             {modalProject.description}
                           </p>
 
@@ -1153,24 +1239,24 @@ export function PortfolioExperience() {
                           </div>
 
                           {/* Outcome */}
-                          <div className="mt-6 flex w-full items-center gap-3 rounded-2xl border p-4"
+                          <div className="mt-4 sm:mt-6 flex w-full items-center gap-2 sm:gap-3 rounded-xl sm:rounded-2xl border p-3 sm:p-4"
                             style={{
                               borderColor: `${modalProject.color}25`,
                               backgroundColor: `${modalProject.color}08`,
                             }}
                           >
                             <div
-                              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl"
+                              className="flex h-9 w-9 sm:h-11 sm:w-11 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl"
                               style={{
                                 backgroundColor: `${modalProject.color}20`,
                                 color: modalProject.color,
                               }}
                             >
-                              <Sparkles className="h-5 w-5" />
+                              <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
                             </div>
-                            <div className="text-left">
-                              <p className="text-xs uppercase tracking-[0.3em] text-muted">Outcome</p>
-                              <p className="mt-1 text-sm font-medium text-foreground">
+                            <div className="text-left min-w-0">
+                              <p className="text-[10px] sm:text-xs uppercase tracking-[0.3em] text-muted">Outcome</p>
+                              <p className="mt-0.5 sm:mt-1 text-xs sm:text-sm font-medium text-foreground">
                                 {modalProject.outcome}
                               </p>
                             </div>
@@ -1183,7 +1269,7 @@ export function PortfolioExperience() {
               </motion.div>
             </section>
 
-            <section id="contact" className="scroll-mt-28 pt-20 lg:pt-24">
+            <section id="contact" className="scroll-mt-20 sm:scroll-mt-28 pt-16 sm:pt-20 lg:pt-24">
               <motion.div
                 className="grid gap-6 rounded-[2rem] border border-border bg-surface/70 p-8 shadow-2xl shadow-black/20 backdrop-blur-xl lg:grid-cols-[1fr_0.9fr]"
                 initial={{ opacity: 0, y: 28 }}
@@ -1197,11 +1283,11 @@ export function PortfolioExperience() {
                     Contact
                   </span>
 
-                  <h2 className="mt-6 text-4xl font-semibold tracking-tight text-foreground sm:text-5xl">
+                  <h2 className="mt-6 text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-foreground lg:text-5xl">
                     Let&apos;s build something polished and memorable.
                   </h2>
 
-                  <p className="mt-5 max-w-2xl text-sm leading-7 text-muted sm:text-base">
+                  <p className="mt-5 max-w-2xl text-sm leading-6 sm:leading-7 text-muted sm:text-base">
                     Use the form or grab one of the contact links. I kept this section simple on
                     purpose so it feels fast, focused, and easy to act on.
                   </p>
@@ -1226,7 +1312,7 @@ export function PortfolioExperience() {
                   </div>
                 </div>
 
-                <form className="grid gap-4 rounded-[1.5rem] border border-border bg-background/45 p-5" onSubmit={handleContactSubmit}>
+                <form className="grid gap-3 sm:gap-4 rounded-[1.25rem] sm:rounded-[1.5rem] border border-border bg-background/45 p-4 sm:p-5" onSubmit={handleContactSubmit}>
                   <label className="grid gap-2">
                     <span className="text-sm font-medium text-foreground">Name</span>
                     <input
@@ -1257,12 +1343,47 @@ export function PortfolioExperience() {
                     />
                   </label>
 
+                  {/* Status Messages */}
+                  {contactStatus === "success" && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="rounded-xl border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-400"
+                    >
+                      Message sent successfully! I&apos;ll get back to you soon.
+                    </motion.div>
+                  )}
+
+                  {contactStatus === "error" && contactError && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="rounded-xl border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400"
+                    >
+                      {contactError}
+                    </motion.div>
+                  )}
+
                   <button
                     type="submit"
-                    className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#6b9cff]"
+                    disabled={contactStatus === "loading"}
+                    className="inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#6b9cff] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
                   >
-                    Send Message
-                    <Send className="h-4 w-4" />
+                    {contactStatus === "loading" ? (
+                      <>
+                        <motion.div
+                          className="h-4 w-4 rounded-full border-2 border-white/30 border-t-white"
+                          animate={{ rotate: 360 }}
+                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                        />
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        Send Message
+                        <Send className="h-4 w-4" />
+                      </>
+                    )}
                   </button>
                 </form>
               </motion.div>
