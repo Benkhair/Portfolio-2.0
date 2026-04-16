@@ -1284,12 +1284,11 @@ export function PortfolioExperience() {
                   </span>
 
                   <h2 className="mt-6 text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-foreground lg:text-5xl">
-                    Let&apos;s build something polished and memorable.
+                    Let&apos;s build something different.
                   </h2>
 
-                  <p className="mt-5 max-w-2xl text-sm leading-6 sm:leading-7 text-muted sm:text-base">
-                    Use the form or grab one of the contact links. I kept this section simple on
-                    purpose so it feels fast, focused, and easy to act on.
+                  <p className="npm mt-5 max-w-2xl text-sm leading-6 sm:leading-7 text-muted sm:text-base">
+                    Do you want to build a website? an Embedded System? just email me and I got you bro.
                   </p>
 
                   <div className="mt-8 flex flex-wrap gap-3">
