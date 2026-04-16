@@ -9,8 +9,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Dark Blue Portfolio",
-  description: "A sleek Next.js portfolio landing page with a dark blue Tailwind palette.",
+  title: "Benkhair's Portfolio",
+  description: "A portfolio website for Benkhair.",
 };
 
 export default function RootLayout({
