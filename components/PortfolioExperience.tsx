@@ -1271,7 +1271,7 @@ export function PortfolioExperience() {
 
             <section id="contact" className="scroll-mt-20 sm:scroll-mt-28 pt-16 sm:pt-20 lg:pt-24">
               <motion.div
-                className="grid gap-6 rounded-[2rem] border border-border bg-surface/70 p-8 shadow-2xl shadow-black/20 backdrop-blur-xl lg:grid-cols-[1fr_0.9fr]"
+                className="grid gap-6 md:gap-8 rounded-[1.5rem] sm:rounded-[2rem] border border-border bg-surface/70 p-5 sm:p-6 lg:p-8 shadow-2xl shadow-black/20 backdrop-blur-xl lg:grid-cols-[1fr_0.9fr]"
                 initial={{ opacity: 0, y: 28 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.25 }}
@@ -1283,15 +1283,15 @@ export function PortfolioExperience() {
                     Contact
                   </span>
 
-                  <h2 className="mt-6 text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-foreground lg:text-5xl">
+                  <h2 className="mt-4 sm:mt-6 text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-foreground lg:text-5xl">
                     Let&apos;s build something different.
                   </h2>
 
-                  <p className="npm mt-5 max-w-2xl text-sm leading-6 sm:leading-7 text-muted sm:text-base">
+                  <p className="mt-4 sm:mt-5 max-w-2xl text-sm leading-6 sm:leading-7 text-muted sm:text-base">
                     Do you want to build a website? an Embedded System? just email me and I got you bro.
                   </p>
 
-                  <div className="mt-8 flex flex-wrap gap-3">
+                  <div className="mt-6 sm:mt-8 flex flex-wrap gap-2 sm:gap-3">
                     {socialLinks.map((link) => {
                       const Icon = link.icon;
 
@@ -1301,9 +1301,9 @@ export function PortfolioExperience() {
                           href={link.href}
                           target={link.href.startsWith("http") ? "_blank" : undefined}
                           rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-                          className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-4 py-2 text-sm text-foreground transition hover:border-accent/30 hover:bg-accent/10"
+                          className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm text-foreground transition hover:border-accent/30 hover:bg-accent/10"
                         >
-                          <Icon className="h-4 w-4 text-accent" />
+                          <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-accent" />
                           {link.label}
                         </a>
                       );
