@@ -583,8 +583,8 @@ export function PortfolioExperience() {
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.25 }}
               >
-                <div className="w-full max-w-5xl">
-                  <div className="relative h-7 overflow-visible rounded-full border border-white/10 bg-white/10 shadow-[0_0_50px_rgba(79,140,255,0.28)] backdrop-blur-sm">
+                <div className="w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl">
+                  <div className="relative h-2 sm:h-3 md:h-4 overflow-visible rounded-full border border-white/10 bg-white/10 shadow-[0_0_30px_rgba(79,140,255,0.25)] backdrop-blur-sm">
                     <motion.div
                       className="h-full origin-left rounded-full bg-gradient-to-r from-[#2d65ff] via-[#5f92ff] to-[#9fb8ff]"
                       initial={{ scaleX: 0 }}
@@ -593,8 +593,8 @@ export function PortfolioExperience() {
                     />
 
                     <motion.div
-                      className="pointer-events-none absolute -top-16 -translate-x-1/2 rounded-full border border-white/15 bg-[rgba(6,17,31,0.72)] px-5 py-2.5 text-2xl font-semibold tracking-[0.16em] text-white shadow-[0_12px_30px_rgba(0,0,0,0.35)] backdrop-blur-xl md:text-3xl"
-                      style={{ left: `clamp(1.75rem, ${loadingProgress}%, calc(100% - 1.75rem))` }}
+                      className="pointer-events-none absolute -top-10 sm:-top-12 -translate-x-1/2 rounded-full border border-white/15 bg-[rgba(6,17,31,0.72)] px-2 py-1 sm:px-2.5 sm:py-1 text-xs sm:text-sm md:text-base font-semibold tracking-[0.12em] text-white shadow-[0_8px_20px_rgba(0,0,0,0.35)] backdrop-blur-xl"
+                      style={{ left: `clamp(1.5rem, ${loadingProgress}%, calc(100% - 1.5rem))` }}
                       animate={
                         loadingProgress >= 100
                           ? { scale: [1, 1.14, 1], y: [0, -10, 0] }
