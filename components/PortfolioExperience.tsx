@@ -130,6 +130,8 @@ type TechItem = {
   name: string;
   logoSrc: string;
   logoAlt: string;
+  description: string;
+  purpose: string;
 };
 
 type TechCategory = {
@@ -268,40 +270,40 @@ const techStackCategories: TechCategory[] = [
     title: "Web Development",
     description: "Core languages and frameworks I use to build polished web interfaces.",
     items: [
-      { name: "HTML5", logoSrc: html5LogoSvg, logoAlt: "HTML5 logo" },
-      { name: "CSS3", logoSrc: css3LogoSvg, logoAlt: "CSS3 logo" },
-      { name: "JavaScript", logoSrc: javascriptLogoSvg, logoAlt: "JavaScript logo" },
-      { name: "React", logoSrc: reactLogoSvg, logoAlt: "React logo" },
-      { name: "Next.js", logoSrc: nextjsLogoSvg, logoAlt: "Next.js logo" },
-      { name: "TypeScript", logoSrc: typescriptLogoSvg, logoAlt: "TypeScript logo" },
+      { name: "HTML5", logoSrc: html5LogoSvg, logoAlt: "HTML5 logo", description: "The standard markup language for creating web pages.", purpose: "To structure content and build the foundation of web pages." },
+      { name: "CSS3", logoSrc: css3LogoSvg, logoAlt: "CSS3 logo", description: "Style sheet language for describing the presentation of web pages.", purpose: "To style and layout web pages with beautiful designs." },
+      { name: "JavaScript", logoSrc: javascriptLogoSvg, logoAlt: "JavaScript logo", description: "Programming language that enables interactive web content.", purpose: "To add interactivity, dynamic content, and functionality to websites." },
+      { name: "React", logoSrc: reactLogoSvg, logoAlt: "React logo", description: "JavaScript library for building user interfaces with components.", purpose: "To create fast, reusable UI components and single-page applications." },
+      { name: "Next.js", logoSrc: nextjsLogoSvg, logoAlt: "Next.js logo", description: "React framework for production with server-side rendering.", purpose: "To build high-performance, SEO-friendly web applications." },
+      { name: "TypeScript", logoSrc: typescriptLogoSvg, logoAlt: "TypeScript logo", description: "Typed superset of JavaScript that adds static type checking.", purpose: "To catch errors early and improve code quality and maintainability." },
     ],
   },
   {
     title: "Electronics & Robotics",
     description: "Tools and languages I use for embedded systems and intelligent projects.",
     items: [
-      { name: "Arduino", logoSrc: arduinoLogoSvg, logoAlt: "Arduino logo" },
-      { name: "Machine Learning", logoSrc: tensorflowLogoSvg, logoAlt: "TensorFlow logo for machine learning" },
-      { name: "Python", logoSrc: pythonLogoSvg, logoAlt: "Python logo" },
+      { name: "Arduino", logoSrc: arduinoLogoSvg, logoAlt: "Arduino logo", description: "Open-source electronics platform for building interactive devices.", purpose: "To prototype and build hardware projects and IoT devices." },
+      { name: "Machine Learning", logoSrc: tensorflowLogoSvg, logoAlt: "TensorFlow logo for machine learning", description: "Algorithms that enable systems to learn and improve from data.", purpose: "To create intelligent systems that can recognize patterns and make predictions." },
+      { name: "Python", logoSrc: pythonLogoSvg, logoAlt: "Python logo", description: "Versatile programming language with simple syntax and powerful libraries.", purpose: "For automation, data analysis, AI/ML, and rapid prototyping." },
     ],
   },
   {
     title: "IDE",
     description: "The editors and development tools I rely on every day.",
     items: [
-      { name: "VS Code", logoSrc: vscodeLogoSvg, logoAlt: "Visual Studio Code logo" },
-      { name: "Windsurf", logoSrc: windsurfLogoSvg, logoAlt: "Windsurf logo" },
-      { name: "Arduino IDE", logoSrc: arduinoLogoSvg, logoAlt: "Arduino IDE logo" },
-      { name: "Android Studio", logoSrc: androidStudioLogoSvg, logoAlt: "Android Studio logo" },
+      { name: "VS Code", logoSrc: vscodeLogoSvg, logoAlt: "Visual Studio Code logo", description: "Lightweight but powerful source code editor with rich extensions.", purpose: "Primary code editor for web development with great debugging tools." },
+      { name: "Windsurf", logoSrc: windsurfLogoSvg, logoAlt: "Windsurf logo", description: "AI-powered IDE with integrated coding assistance.", purpose: "To boost productivity with AI-assisted coding and development." },
+      { name: "Arduino IDE", logoSrc: arduinoLogoSvg, logoAlt: "Arduino IDE logo", description: "Integrated development environment for Arduino boards.", purpose: "To write, compile, and upload code to Arduino microcontrollers." },
+      { name: "Android Studio", logoSrc: androidStudioLogoSvg, logoAlt: "Android Studio logo", description: "Official IDE for Android app development.", purpose: "To build, test, and debug native Android applications." },
     ],
   },
   {
     title: "Mobile Development",
     description: "Frameworks and languages I use when building mobile experiences.",
     items: [
-      { name: "React Native", logoSrc: reactNativeLogoSvg, logoAlt: "React Native logo" },
-      { name: "Java", logoSrc: javaLogoSvg, logoAlt: "Java logo" },
-      { name: "Flutter", logoSrc: flutterLogoSvg, logoAlt: "Flutter logo" },
+      { name: "React Native", logoSrc: reactNativeLogoSvg, logoAlt: "React Native logo", description: "Framework for building native apps using React.", purpose: "To create cross-platform mobile apps with native performance." },
+      { name: "Java", logoSrc: javaLogoSvg, logoAlt: "Java logo", description: "Object-oriented programming language for enterprise applications.", purpose: "To build robust Android apps and backend systems." },
+      { name: "Flutter", logoSrc: flutterLogoSvg, logoAlt: "Flutter logo", description: "UI toolkit for building beautiful natively compiled applications.", purpose: "To create stunning cross-platform apps from a single codebase." },
     ],
   },
 ];
@@ -314,6 +316,7 @@ export function PortfolioExperience() {
   const [stage, setStage] = useState<Stage>("landing");
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [modalProject, setModalProject] = useState<Project | null>(null);
+  const [modalTech, setModalTech] = useState<TechItem | null>(null);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const lastScrollY = useRef(0);
@@ -565,6 +568,7 @@ export function PortfolioExperience() {
   };
 
   return (
+    <>
     <AnimatePresence mode="wait">
       {stage !== "main" ? (
         <motion.div key="landing" className="relative min-h-screen overflow-hidden">
@@ -842,9 +846,10 @@ export function PortfolioExperience() {
                             index === category.items.length - 1;
 
                           return (
-                          <div
+                          <button
                             key={item.name}
-                            className={`flex h-full min-h-[78px] items-center gap-3 rounded-2xl border border-border/70 bg-background/85 px-3 py-3 shadow-sm transition duration-300 hover:border-accent/30 hover:bg-surface/80 ${isCenteredLastItem ? "sm:col-span-2 sm:w-full sm:max-w-[calc(50%-0.375rem)] sm:justify-self-center" : ""}`}
+                            onClick={() => setModalTech(item)}
+                            className={`flex h-full min-h-[78px] items-center gap-3 rounded-2xl border border-border/70 bg-background/85 px-3 py-3 shadow-sm transition duration-300 hover:border-accent/30 hover:bg-surface/80 cursor-pointer text-left ${isCenteredLastItem ? "sm:col-span-2 sm:w-full sm:max-w-[calc(50%-0.375rem)] sm:justify-self-center" : ""}`}
                           >
                             <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-background/90 p-2 shadow-sm ring-1 ring-white/5">
                               {item.name === "Windsurf" ? (
@@ -895,7 +900,7 @@ export function PortfolioExperience() {
                             <div className="min-w-0">
                               <p className="text-sm font-semibold text-foreground">{item.name}</p>
                             </div>
-                          </div>
+                          </button>
                           );
                         })}
                       </div>
@@ -1391,5 +1396,87 @@ export function PortfolioExperience() {
         </motion.div>
       )}
     </AnimatePresence>
+
+    {modalTech && (
+      <AnimatePresence>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-3 sm:p-4 backdrop-blur-sm"
+          onClick={() => setModalTech(null)}
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="relative w-full max-w-[95vw] sm:max-w-md overflow-hidden rounded-[1.5rem] sm:rounded-[2rem] border border-border/70 bg-surface/95 p-5 sm:p-6 shadow-2xl backdrop-blur-xl max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              type="button"
+              onClick={() => setModalTech(null)}
+              className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-background/50 text-muted transition hover:border-accent hover:text-foreground"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            <div className="flex flex-col items-center text-center">
+              {/* Icon */}
+              <span className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-2xl bg-background/90 p-3 shadow-sm ring-1 ring-white/5">
+                {modalTech!.name === "Windsurf" ? (
+                  <Image
+                    src={windsurfLogoSvg}
+                    alt={modalTech!.logoAlt}
+                    width={40}
+                    height={40}
+                    className="h-10 w-10 sm:h-12 sm:w-12 object-contain"
+                  />
+                ) : modalTech!.name === "Next.js" ? (
+                  <Image
+                    src={nextjsLogoSvg}
+                    alt={modalTech!.logoAlt}
+                    width={40}
+                    height={40}
+                    className="h-10 w-10 sm:h-12 sm:w-12 object-contain"
+                  />
+                ) : (
+                  <Image
+                    src={modalTech!.logoSrc}
+                    alt={modalTech!.logoAlt}
+                    width={40}
+                    height={40}
+                    className="h-10 w-10 sm:h-12 sm:w-12 object-contain"
+                  />
+                )}
+              </span>
+
+              <h3 className="mt-5 text-xl sm:text-2xl font-semibold text-foreground">
+                {modalTech!.name}
+              </h3>
+
+              {/* Description */}
+              <div className="mt-4 w-full rounded-xl border border-border/50 bg-background/60 p-4 text-left">
+                <p className="text-[10px] uppercase tracking-[0.3em] text-muted">Description</p>
+                <p className="mt-1 text-sm leading-6 text-foreground">
+                  {modalTech!.description}
+                </p>
+              </div>
+
+              {/* Purpose */}
+              <div className="mt-3 w-full rounded-xl border border-accent/30 bg-accent/10 p-4 text-left">
+                <p className="text-[10px] uppercase tracking-[0.3em] text-accent">Purpose</p>
+                <p className="mt-1 text-sm leading-6 text-foreground">
+                  {modalTech!.purpose}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
+    )}
+    </>
   );
 }
