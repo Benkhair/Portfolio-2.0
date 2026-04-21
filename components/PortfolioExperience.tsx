@@ -15,7 +15,6 @@ import {
   Droplets,
   Gamepad2,
   Gauge,
-  Globe,
   Layers3,
   Mail,
   MapPin,
@@ -108,23 +107,6 @@ const projects: Project[] = [
   },
 ];
 
-const socialLinks = [
-  {
-    label: "Website",
-    href: "https://example.com/",
-    icon: Globe,
-  },
-  {
-    label: "Email",
-    href: "mailto:hello@example.com",
-    icon: Mail,
-  },
-  {
-    label: "Connect",
-    href: "https://www.linkedin.com/",
-    icon: Send,
-  },
-] as const;
 
 type TechItem = {
   name: string;
@@ -189,11 +171,11 @@ const css3LogoSvg = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
 `)}`;
 
 const nextjsLogoSvg = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100"><g fill="#000" clip-path="url(#a)"><path d="M66.477 40.008h17.418v3.215h-6.91v16.914h-3.454V43.223h-7.054zm-28.647 0v3.215H23.87v5.172h11.228v3.215H23.869v5.312H37.83v3.215H20.414V43.223h-.002v-3.215zm8.698.009h-4.521L58.2 60.145h4.535l-8.099-10.057 8.086-10.056-4.522.007-5.827 7.238zm4.64 14.378-2.265-2.816-6.91 8.581h4.535z"/><path fill-rule="evenodd" d="M20.535 60.137 4.319 40H0v20.128h3.455V44.302l12.74 15.835z" clip-rule="evenodd"/><path d="M84.672 60.014a.9.9 0 0 1-.649-.263.85.85 0 0 1-.267-.639.84.84 0 0 1 .267-.63.9.9 0 0 1 .649-.263q.365 0 .636.263a.854.854 0 0 1 .148 1.084.93.93 0 0 1-.335.326.86.86 0 0 1-.45.122m5.898-8.48h1.53v5.899q-.004.812-.348 1.395-.347.584-.965.898-.616.312-1.435.313-.746-.001-1.343-.265a2.16 2.16 0 0 1-.946-.784q-.35-.52-.349-1.294h1.534q.004.34.151.586a1 1 0 0 0 .408.376q.263.13.604.131.37.001.627-.154a1 1 0 0 0 .393-.457q.135-.301.138-.745zm7.83 2.307a1.11 1.11 0 0 0-.487-.835q-.432-.3-1.117-.3-.481.001-.826.143-.345.145-.53.39a.95.95 0 0 0-.186.56q0 .264.124.455.122.195.334.325.211.135.469.224.26.09.52.152l.797.196q.483.11.93.3.447.188.803.475.354.287.562.692t.208.95q.001.738-.382 1.297-.381.557-1.105.872-.719.313-1.744.314c-.66 0-1.236-.102-1.72-.305a2.54 2.54 0 0 1-1.14-.883q-.41-.582-.443-1.416h1.518c.02.29.114.532.273.728q.243.29.63.434.39.143.87.143.503 0 .886-.15.379-.148.594-.417a.98.98 0 0 0 .22-.628.8.8 0 0 0-.194-.544 1.5 1.5 0 0 0-.534-.36 5.5 5.5 0 0 0-.8-.26l-.97-.245q-1.05-.267-1.66-.81-.608-.542-.608-1.444 0-.74.41-1.298.408-.558 1.114-.865.71-.311 1.601-.31.905-.001 1.59.31.685.307 1.074.855.391.547.403 1.255z"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 40h100v20.305H0z"/></clipPath></defs></svg>
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 40 100 20.305"><g fill="#000"><path d="M66.477 40.008h17.418v3.215h-6.91v16.914h-3.454V43.223h-7.054zm-28.647 0v3.215H23.87v5.172h11.228v3.215H23.869v5.312H37.83v3.215H20.414V43.223h-.002v-3.215zm8.698.009h-4.521L58.2 60.145h4.535l-8.099-10.057 8.086-10.056-4.522.007-5.827 7.238zm4.64 14.378-2.265-2.816-6.91 8.581h4.535z"/><path fill-rule="evenodd" d="M20.535 60.137 4.319 40H0v20.128h3.455V44.302l12.74 15.835z" clip-rule="evenodd"/><path d="M84.672 60.014a.9.9 0 0 1-.649-.263.85.85 0 0 1-.267-.639.84.84 0 0 1 .267-.63.9.9 0 0 1 .649-.263q.365 0 .636.263a.854.854 0 0 1 .148 1.084.93.93 0 0 1-.335.326.86.86 0 0 1-.45.122m5.898-8.48h1.53v5.899q-.004.812-.348 1.395-.347.584-.965.898-.616.312-1.435.313-.746-.001-1.343-.265a2.16 2.16 0 0 1-.946-.784q-.35-.52-.349-1.294h1.534q.004.34.151.586a1 1 0 0 0 .408.376q.263.13.604.131.37.001.627-.154a1 1 0 0 0 .393-.457q.135-.301.138-.745zm7.83 2.307a1.11 1.11 0 0 0-.487-.835q-.432-.3-1.117-.3-.481.001-.826.143-.345.145-.53.39a.95.95 0 0 0-.186.56q0 .264.124.455.122.195.334.325.211.135.469.224.26.09.52.152l.797.196q.483.11.93.3.447.188.803.475.354.287.562.692t.208.95q.001.738-.382 1.297-.381.557-1.105.872-.719.313-1.744.314c-.66 0-1.236-.102-1.72-.305a2.54 2.54 0 0 1-1.14-.883q-.41-.582-.443-1.416h1.518c.02.29.114.532.273.728q.243.29.63.434.39.143.87.143.503 0 .886-.15.379-.148.594-.417a.98.98 0 0 0 .22-.628.8.8 0 0 0-.194-.544 1.5 1.5 0 0 0-.534-.36 5.5 5.5 0 0 0-.8-.26l-.97-.245q-1.05-.267-1.66-.81-.608-.542-.608-1.444 0-.74.41-1.298.408-.558 1.114-.865.71-.311 1.601-.31.905-.001 1.59.31.685.307 1.074.855.391.547.403 1.255z"/></g></svg>
 `)}`;
 
 const nextjsLogoSvgDark = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100"><g fill="#fff" clip-path="url(#a)"><path d="M66.477 40.008h17.418v3.215h-6.91v16.914h-3.454V43.223h-7.054zm-28.647 0v3.215H23.87v5.172h11.228v3.215H23.869v5.312H37.83v3.215H20.414V43.223h-.002v-3.215zm8.698.009h-4.521L58.2 60.145h4.535l-8.099-10.057 8.086-10.056-4.522.007-5.827 7.238zm4.64 14.378-2.265-2.816-6.91 8.581h4.535z"/><path fill-rule="evenodd" d="M20.535 60.137 4.319 40H0v20.128h3.455V44.302l12.74 15.835z" clip-rule="evenodd"/><path d="M84.672 60.014a.9.9 0 0 1-.649-.263.85.85 0 0 1-.267-.639.84.84 0 0 1 .267-.63.9.9 0 0 1 .649-.263q.365 0 .636.263a.854.854 0 0 1 .148 1.084.93.93 0 0 1-.335.326.86.86 0 0 1-.45.122m5.898-8.48h1.53v5.899q-.004.812-.348 1.395-.347.584-.965.898-.616.312-1.435.313-.746-.001-1.343-.265a2.16 2.16 0 0 1-.946-.784q-.35-.52-.349-1.294h1.534q.004.34.151.586a1 1 0 0 0 .408.376q.263.13.604.131.37.001.627-.154a1 1 0 0 0 .393-.457q.135-.301.138-.745zm7.83 2.307a1.11 1.11 0 0 0-.487-.835q-.432-.3-1.117-.3-.481.001-.826.143-.345.145-.53.39a.95.95 0 0 0-.186.56q0 .264.124.455.122.195.334.325.211.135.469.224.26.09.52.152l.797.196q.483.11.93.3.447.188.803.475.354.287.562.692t.208.95q.001.738-.382 1.297-.381.557-1.105.872-.719.313-1.744.314c-.66 0-1.236-.102-1.72-.305a2.54 2.54 0 0 1-1.14-.883q-.41-.582-.443-1.416h1.518c.02.29.114.532.273.728q.243.29.63.434.39.143.87.143.503 0 .886-.15.379-.148.594-.417a.98.98 0 0 0 .22-.628.8.8 0 0 0-.194-.544 1.5 1.5 0 0 0-.534-.36 5.5 5.5 0 0 0-.8-.26l-.97-.245q-1.05-.267-1.66-.81-.608-.542-.608-1.444 0-.74.41-1.298.408-.558 1.114-.865.71-.311 1.601-.31.905-.001 1.59.31.685.307 1.074.855.391.547.403 1.255z"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 40h100v20.305H0z"/></clipPath></defs></svg>
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 40 100 20.305"><g fill="#fff"><path d="M66.477 40.008h17.418v3.215h-6.91v16.914h-3.454V43.223h-7.054zm-28.647 0v3.215H23.87v5.172h11.228v3.215H23.869v5.312H37.83v3.215H20.414V43.223h-.002v-3.215zm8.698.009h-4.521L58.2 60.145h4.535l-8.099-10.057 8.086-10.056-4.522.007-5.827 7.238zm4.64 14.378-2.265-2.816-6.91 8.581h4.535z"/><path fill-rule="evenodd" d="M20.535 60.137 4.319 40H0v20.128h3.455V44.302l12.74 15.835z" clip-rule="evenodd"/><path d="M84.672 60.014a.9.9 0 0 1-.649-.263.85.85 0 0 1-.267-.639.84.84 0 0 1 .267-.63.9.9 0 0 1 .649-.263q.365 0 .636.263a.854.854 0 0 1 .148 1.084.93.93 0 0 1-.335.326.86.86 0 0 1-.45.122m5.898-8.48h1.53v5.899q-.004.812-.348 1.395-.347.584-.965.898-.616.312-1.435.313-.746-.001-1.343-.265a2.16 2.16 0 0 1-.946-.784q-.35-.52-.349-1.294h1.534q.004.34.151.586a1 1 0 0 0 .408.376q.263.13.604.131.37.001.627-.154a1 1 0 0 0 .393-.457q.135-.301.138-.745zm7.83 2.307a1.11 1.11 0 0 0-.487-.835q-.432-.3-1.117-.3-.481.001-.826.143-.345.145-.53.39a.95.95 0 0 0-.186.56q0 .264.124.455.122.195.334.325.211.135.469.224.26.09.52.152l.797.196q.483.11.93.3.447.188.803.475.354.287.562.692t.208.95q.001.738-.382 1.297-.381.557-1.105.872-.719.313-1.744.314c-.66 0-1.236-.102-1.72-.305a2.54 2.54 0 0 1-1.14-.883q-.41-.582-.443-1.416h1.518c.02.29.114.532.273.728q.243.29.63.434.39.143.87.143.503 0 .886-.15.379-.148.594-.417a.98.98 0 0 0 .22-.628.8.8 0 0 0-.194-.544 1.5 1.5 0 0 0-.534-.36 5.5 5.5 0 0 0-.8-.26l-.97-.245q-1.05-.267-1.66-.81-.608-.542-.608-1.444 0-.74.41-1.298.408-.558 1.114-.865.71-.311 1.601-.31.905-.001 1.59.31.685.307 1.074.855.391.547.403 1.255z"/></g></svg>
 `)}`;
 
 const typescriptLogoSvg = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
@@ -220,11 +202,11 @@ const vscodeLogoSvg = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
 `)}`;
 
 const windsurfLogoSvg = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100"><g clip-path="url(#a)"><path fill="#000" fill-rule="evenodd" d="M99.051 21.156h-.953a9.07 9.07 0 0 0-9.085 9.07V50.51c0 4.05-3.348 7.332-7.332 7.332-2.367 0-4.73-1.191-6.132-3.191L54.83 25.06a9.18 9.18 0 0 0-7.542-3.92c-4.723 0-8.972 4.015-8.972 8.972v20.401c0 4.05-3.32 7.332-7.332 7.332-2.375 0-4.735-1.192-6.137-3.191L1.664 21.545c-.523-.746-1.699-.378-1.699.535v17.691c0 .895.274 1.762.785 2.496L23.562 74.85c1.348 1.926 3.336 3.355 5.629 3.875 5.738 1.305 11.019-3.113 11.019-8.742v-20.39a7.33 7.33 0 0 1 7.331-7.332h.013a7.49 7.49 0 0 1 6.132 3.192l20.718 29.585c1.722 2.46 4.375 3.921 7.539 3.921 4.828 0 8.964-4.02 8.964-8.972V49.588a7.33 7.33 0 0 1 7.332-7.331h.808c.508 0 .918-.41.918-.918v-19.27a.917.917 0 0 0-.918-.917z" clip-rule="evenodd"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h100v100H0z"/></clipPath></defs></svg>
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100"><path fill="#000" fill-rule="evenodd" d="M99.051 21.156h-.953a9.07 9.07 0 0 0-9.085 9.07V50.51c0 4.05-3.348 7.332-7.332 7.332-2.367 0-4.73-1.191-6.132-3.191L54.83 25.06a9.18 9.18 0 0 0-7.542-3.92c-4.723 0-8.972 4.015-8.972 8.972v20.401c0 4.05-3.32 7.332-7.332 7.332-2.375 0-4.735-1.192-6.137-3.191L1.664 21.545c-.523-.746-1.699-.378-1.699.535v17.691c0 .895.274 1.762.785 2.496L23.562 74.85c1.348 1.926 3.336 3.355 5.629 3.875 5.738 1.305 11.019-3.113 11.019-8.742v-20.39a7.33 7.33 0 0 1 7.331-7.332h.013a7.49 7.49 0 0 1 6.132 3.192l20.718 29.585c1.722 2.46 4.375 3.921 7.539 3.921 4.828 0 8.964-4.02 8.964-8.972V49.588a7.33 7.33 0 0 1 7.332-7.331h.808c.508 0 .918-.41.918-.918v-19.27a.917.917 0 0 0-.918-.917z" clip-rule="evenodd"/></svg>
 `)}`;
 
 const windsurfLogoSvgDark = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
-<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100"><g clip-path="url(#a)"><path fill="#fff" fill-rule="evenodd" d="M99.051 21.156h-.953a9.07 9.07 0 0 0-9.085 9.07V50.51c0 4.05-3.348 7.332-7.332 7.332-2.367 0-4.73-1.191-6.132-3.191L54.83 25.06a9.18 9.18 0 0 0-7.542-3.92c-4.723 0-8.972 4.015-8.972 8.972v20.401c0 4.05-3.32 7.332-7.332 7.332-2.375 0-4.735-1.192-6.137-3.191L1.664 21.545c-.523-.746-1.699-.378-1.699.535v17.691c0 .895.274 1.762.785 2.496L23.562 74.85c1.348 1.926 3.336 3.355 5.629 3.875 5.738 1.305 11.019-3.113 11.019-8.742v-20.39a7.33 7.33 0 0 1 7.331-7.332h.013a7.49 7.49 0 0 1 6.132 3.192l20.718 29.585c1.722 2.46 4.375 3.921 7.539 3.921 4.828 0 8.964-4.02 8.964-8.972V49.588a7.33 7.33 0 0 1 7.332-7.331h.808c.508 0 .918-.41.918-.918v-19.27a.917.917 0 0 0-.918-.917z" clip-rule="evenodd"/></g><defs><clipPath id="a"><path fill="#fff" d="M0 0h100v100H0z"/></clipPath></defs></svg>
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 100 100"><path fill="#fff" fill-rule="evenodd" d="M99.051 21.156h-.953a9.07 9.07 0 0 0-9.085 9.07V50.51c0 4.05-3.348 7.332-7.332 7.332-2.367 0-4.73-1.191-6.132-3.191L54.83 25.06a9.18 9.18 0 0 0-7.542-3.92c-4.723 0-8.972 4.015-8.972 8.972v20.401c0 4.05-3.32 7.332-7.332 7.332-2.375 0-4.735-1.192-6.137-3.191L1.664 21.545c-.523-.746-1.699-.378-1.699.535v17.691c0 .895.274 1.762.785 2.496L23.562 74.85c1.348 1.926 3.336 3.355 5.629 3.875 5.738 1.305 11.019-3.113 11.019-8.742v-20.39a7.33 7.33 0 0 1 7.331-7.332h.013a7.49 7.49 0 0 1 6.132 3.192l20.718 29.585c1.722 2.46 4.375 3.921 7.539 3.921 4.828 0 8.964-4.02 8.964-8.972V49.588a7.33 7.33 0 0 1 7.332-7.331h.808c.508 0 .918-.41.918-.918v-19.27a.917.917 0 0 0-.918-.917z" clip-rule="evenodd"/></svg>
 `)}`;
 
 const androidStudioLogoSvg = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
@@ -319,6 +301,7 @@ export function PortfolioExperience() {
   const [modalTech, setModalTech] = useState<TechItem | null>(null);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
+  const [isDark, setIsDark] = useState(true);
   const lastScrollY = useRef(0);
   const lenisRef = useRef<Lenis | null>(null);
   const transitionTimeoutRef = useRef<number | null>(null);
@@ -328,6 +311,16 @@ export function PortfolioExperience() {
 
   // Scroll progress bar scale
   const scrollProgressScale = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  // Track data-theme on <html> to know current theme
+  useEffect(() => {
+    const html = document.documentElement;
+    const update = () => setIsDark(html.dataset.theme !== "light");
+    update();
+    const observer = new MutationObserver(update);
+    observer.observe(html, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => observer.disconnect();
+  }, []);
 
   // Navbar hide/show on scroll - only hides when scrolling down, shows immediately when scrolling up
   useEffect(() => {
@@ -853,39 +846,19 @@ export function PortfolioExperience() {
                           >
                             <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-background/90 p-2 shadow-sm ring-1 ring-white/5">
                               {item.name === "Windsurf" ? (
-                                <>
-                                  <Image
-                                    src={windsurfLogoSvg}
-                                    alt={item.logoAlt}
-                                    width={24}
-                                    height={24}
-                                    className="h-6 w-6 object-contain dark:hidden"
-                                  />
-                                  <Image
-                                    src={windsurfLogoSvgDark}
-                                    alt={item.logoAlt}
-                                    width={24}
-                                    height={24}
-                                    className="hidden h-6 w-6 object-contain dark:block"
-                                  />
-                                </>
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img
+                                  src={isDark ? windsurfLogoSvgDark : windsurfLogoSvg}
+                                  alt={item.logoAlt}
+                                  className="h-6 w-6 object-contain"
+                                />
                               ) : item.name === "Next.js" ? (
-                                <>
-                                  <Image
-                                    src={nextjsLogoSvg}
-                                    alt={item.logoAlt}
-                                    width={24}
-                                    height={24}
-                                    className="h-6 w-6 object-contain dark:hidden"
-                                  />
-                                  <Image
-                                    src={nextjsLogoSvgDark}
-                                    alt={item.logoAlt}
-                                    width={24}
-                                    height={24}
-                                    className="hidden h-6 w-6 object-contain dark:block"
-                                  />
-                                </>
+                                // eslint-disable-next-line @next/next/no-img-element
+                                <img
+                                  src={isDark ? nextjsLogoSvgDark : nextjsLogoSvg}
+                                  alt={item.logoAlt}
+                                  className="h-6 w-6 object-contain"
+                                />
                               ) : (
                                 <Image
                                   src={item.logoSrc}
@@ -1296,24 +1269,6 @@ export function PortfolioExperience() {
                     Do you want to build a website? an Embedded System? just email me and I got you bro.
                   </p>
 
-                  <div className="mt-6 sm:mt-8 flex flex-wrap gap-2 sm:gap-3">
-                    {socialLinks.map((link) => {
-                      const Icon = link.icon;
-
-                      return (
-                        <a
-                          key={link.label}
-                          href={link.href}
-                          target={link.href.startsWith("http") ? "_blank" : undefined}
-                          rel={link.href.startsWith("http") ? "noreferrer" : undefined}
-                          className="inline-flex items-center gap-2 rounded-full border border-border bg-background/60 px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm text-foreground transition hover:border-accent/30 hover:bg-accent/10"
-                        >
-                          <Icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-accent" />
-                          {link.label}
-                        </a>
-                      );
-                    })}
-                  </div>
                 </div>
 
                 <form className="grid gap-3 sm:gap-4 rounded-[1.25rem] sm:rounded-[1.5rem] border border-border bg-background/45 p-4 sm:p-5" onSubmit={handleContactSubmit}>
@@ -1427,19 +1382,17 @@ export function PortfolioExperience() {
               {/* Icon */}
               <span className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-2xl bg-background/90 p-3 shadow-sm ring-1 ring-white/5">
                 {modalTech!.name === "Windsurf" ? (
-                  <Image
-                    src={windsurfLogoSvg}
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={isDark ? windsurfLogoSvgDark : windsurfLogoSvg}
                     alt={modalTech!.logoAlt}
-                    width={40}
-                    height={40}
                     className="h-10 w-10 sm:h-12 sm:w-12 object-contain"
                   />
                 ) : modalTech!.name === "Next.js" ? (
-                  <Image
-                    src={nextjsLogoSvg}
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={isDark ? nextjsLogoSvgDark : nextjsLogoSvg}
                     alt={modalTech!.logoAlt}
-                    width={40}
-                    height={40}
                     className="h-10 w-10 sm:h-12 sm:w-12 object-contain"
                   />
                 ) : (
